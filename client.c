@@ -7,14 +7,15 @@ void send_bits(int pid, char c)
 {
     int i = 0;
     int out = c;
+    int result;
     while(i<8)
     {
-         
-        if(out & 1==1)
+         result = out & 128;
+        if(result)
             kill(pid, SIGUSR1);
-        else
+        else 
             kill(pid, SIGUSR2);
-        usleep(500);
+        
         out = out<<1;
         i++;
     }
