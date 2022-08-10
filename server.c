@@ -4,26 +4,47 @@
 #include <stdio.h>
 #include <unistd.h>
 
-    unsigned char	reverse_bits(unsigned char octet)
+   int	get_strlen(int c)
 {
-	int		i = 8;
-	unsigned char	res = 0;
-
-	while (i > 0)
-	{
-		res = res * 2 + (octet % 2);
-		octet = octet / 2;
-		i--;
-	}
-	return (res);
+	 static int i;
+     static unsigned int len;
+     int x = 0;
+    if(!i || i == 0)
+    {
+    i = 0;
+    len = 0;
+    }
+        if(i<32)
+        {
+            if(c == SIGUSR1)  
+                len = len | 1;        
+            i++;
+        }
+        if(i != 32)
+           len = len<<1;
+         if(i == 32)             
+         { 
+             i=0;
+            return(len);
+          }
+        return(0);
 }
     void handle_sigusr1(int c)
     {    
-      
+       
         static int i;
+        static int len;
+        static char *array;
         unsigned char put;
-        int x = 0;
-        if(!i)
+        if(len == 0)  
+            len = get_strlen(c);
+        if(len!= 0)
+        {    
+            printf("len es: %d\n", len);
+            array =  (char*)malloc(sizeof(char)* len);
+            len = 0; 
+        }         
+        /* if(!i)
         {   
             i = 0;  
             put  = 0;           
@@ -40,7 +61,7 @@
         {             
             write(1, &put, 1);
             i = 0;
-        } 
+        }  */
          
     }
 
@@ -57,9 +78,9 @@ int main()
     
    
     sa.sa_handler = &handle_sigusr1;
- 
     sigaction(SIGUSR1, &sa, NULL);
     sigaction(SIGUSR2, &sa, NULL);
+    pause();
     }
 
 }
