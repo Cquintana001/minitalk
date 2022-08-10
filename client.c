@@ -53,14 +53,13 @@ int main(int argc, char *argv[])
     while(str_to_send[x]) // sustituir por ft_strlen del Libft
         x++;
     len = x;
-    printf("len es %d\n", len);
     send_strlen(pid, len);
-    /* x = 0;
+    x = 0;
     while(str_to_send[x])
     {
-       
+        
         send_bits(pid, str_to_send[x]);
         x++;
-    } */
+    }
     return(0);
 }

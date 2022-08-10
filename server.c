@@ -8,7 +8,7 @@
 {
 	 static int i;
      static unsigned int len;
-     int x = 0;
+  
     if(!i || i == 0)
     {
     i = 0;
@@ -34,35 +34,44 @@
        
         static int i;
         static int len;
-        static char *array;
-        unsigned char put;
-        if(len == 0)  
+        static  char *array;
+        static char put;
+        static int check;
+        if(check == 0 )  
             len = get_strlen(c);
-        if(len!= 0)
+        if(len!= 0 && check == 0 )
         {    
-            printf("len es: %d\n", len);
-            array =  (char*)malloc(sizeof(char)* len);
-            len = 0; 
-        }         
-        /* if(!i)
-        {   
-            i = 0;  
-            put  = 0;           
-        }
-        if(i < 8)
-        {
-            if(c == SIGUSR1)  
-                put = put | 1;        
-            i++;
-        }
-        if(i != 8)
-           put = put<<1;
-         if(i == 8)
-        {             
-            write(1, &put, 1);
-            i = 0;
-        }  */
-         
+            
+            array =  (char*)malloc((sizeof(char)* len)+1);
+            array[len] = 0;
+            check = 1;
+            return;
+        }  
+        
+         if(check)
+        {         
+             
+            if(!i)
+            {   
+                i = 0;  
+                put  = 0;           
+            }
+            if(i < 8)
+            {
+                if(c == SIGUSR1)  
+                    put = put | 1;        
+                i++;
+            }
+ 
+            if(i != 8)
+               put = put<<1;
+             if(i == 8)
+            {                                    
+                write(1, &put, 1);         
+                i = 0;
+            } 
+         }
+              
     }
 
 int main()
